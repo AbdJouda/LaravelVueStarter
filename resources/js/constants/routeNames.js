@@ -1,0 +1,15 @@
+export const RouteNames = {
+    LOGIN: 'login',
+    FORGOT_PASSWORD: 'forgot-password',
+    RESET_PASSWORD: 'reset-password',
+    PROFILE: 'profile',
+    DASHBOARD: 'dashboard',
+    LIST_USERS: 'users',
+    ADD_USER: 'add-user',
+    EDIT_USER: 'edit-user',
+    LIST_ROLES: 'roles',
+    ADD_ROLE: 'add-role',
+    EDIT_ROLE: 'edit-role',
+    SETTINGS: 'settings',
+    FORBIDDEN_ACCESS: 'forbidden',
+};

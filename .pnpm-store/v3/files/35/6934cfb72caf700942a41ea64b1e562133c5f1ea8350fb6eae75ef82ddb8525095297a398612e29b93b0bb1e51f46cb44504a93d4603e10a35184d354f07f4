@@ -1,0 +1,22 @@
+{
+  "name": "@vue-hero-icons/outline",
+  "version": "1.7.2",
+  "main": "lib/index.cjs.js",
+  "module": "lib/index.es.js",
+  "jsnext:main": "lib/index.es.js",
+  "license": "MIT",
+  "homepage": "https://vue-hero-icons.netlify.com",
+  "description": "A set of free MIT-licensed high-quality SVG icons as Vue functional components.",
+  "keywords": [
+    "icons",
+    "vuejs"
+  ],
+  "repository": {
+    "url": "matschik/vue-hero-icons",
+    "type": "git"
+  },
+  "author": "Mathieu SCHIMMERLING <mathieu.schimmerling@protonmail.com>",
+  "dependencies": {
+    "babel-helper-vue-jsx-merge-props": "^2.0.3"
+  }
+}

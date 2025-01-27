@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
 
 
         $this->call([
-            PermissionsSeeder::class
+            PermissionsSeeder::class,
+            SettingsSeeder::class
         ]);
 
         $user->assignRole('admin');

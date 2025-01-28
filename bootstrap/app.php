@@ -22,12 +22,12 @@ return Application::configure(basePath: dirname(__DIR__))
                 ? $requestedVersion
                 : Config::get('settings.api.current_version');
 
-            Route::prefix('shared')
+            Route::prefix('api/shared')
                 ->middleware('shared')
                 ->group(base_path("routes/V{$requestedVersion}/shared.php"));
 
 
-            Route::prefix('admin')
+            Route::prefix('api/admin')
                 ->middleware('admin')
                 ->group(base_path("routes/V{$requestedVersion}/admin.php"));
 

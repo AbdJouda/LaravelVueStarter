@@ -4,7 +4,7 @@ import { useGlobalStore } from '@/stores/globalStore';
 import { RouteNames } from '@/constants/routeNames';
 
 const API_VERSION = import.meta.env.VITE_APP_API_V || '1.0';
-const BASE_URL = import.meta.env.VITE_APP_BASE_URL || 'http://localhost:3000';
+const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 const DEFAULT_PER_PAGE = import.meta.env.VITE_APP_PER_PAGE_DEFAULT || 10;
 
 const DEFAULT_SORT_PARAMS = {

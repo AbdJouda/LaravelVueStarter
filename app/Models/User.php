@@ -82,8 +82,6 @@ class User extends Authenticatable
      */
     public function hasNewNotifications(): Attribute
     {
-        logger($this->unreadNotifications()->get());
-        logger($this->unreadNotifications()->get());
         return Attribute::make(
             get: fn() => $this->unreadNotifications()->exists(),
         );

@@ -27,7 +27,12 @@ export default defineConfig({
         Components({
             extensions: ['tsx', 'jsx', 'vue'],
             dirs: ['./resources/js/components'],
-            resolvers: [ElementPlusResolver({ importStyle: 'sass' })],
+            resolvers: [
+                ElementPlusResolver({
+                    importStyle: "sass",
+                    directives: true,
+                }),
+            ],
             dts: 'resources/js/components.d.ts',
         }),
     ],
@@ -43,16 +48,14 @@ export default defineConfig({
             output: {
                 manualChunks(id) {
                     if (id.includes('node_modules')) {
-                        if (id.includes('element-plus')) return 'element-plus';
-                        if (id.includes('@fortawesome')) return 'fontawesome';
-                        if (id.includes('vue') || id.includes('vue-router') || id.includes('pinia')) return 'vue-core';
-                        if (id.includes('@vueuse/core')) return 'vueuse';
-                        if (id.includes('nprogress')) return 'nprogress';
-                        if (id.includes('pusher-js') || id.includes('laravel-echo')) return 'realtime';
-                        if (id.includes('vee-validate') || id.includes('yup')) return 'validation';
+                        if (id.includes('element-plus/es/')) return 'element-ui';
+                        if (id.includes('@fortawesome')) return 'fontawesome-icons';
+                        if (id.includes('vue-router')) return 'vue-router';
+                        if (id.includes('pinia')) return 'pinia';
+                        if (id.includes('vue/dist/vue.esm-bundler.js')) return 'vue';
                         return 'vendor';
                     }
-                },
+                }
             },
         },
     },

@@ -37,4 +37,23 @@ export default defineConfig({
             '@': '/resources/js',
         },
     },
+    build: {
+        chunkSizeWarningLimit: 1000,
+        rollupOptions: {
+            output: {
+                manualChunks(id) {
+                    if (id.includes('node_modules')) {
+                        if (id.includes('element-plus')) return 'element-plus';
+                        if (id.includes('@fortawesome')) return 'fontawesome';
+                        if (id.includes('vue') || id.includes('vue-router') || id.includes('pinia')) return 'vue-core';
+                        if (id.includes('@vueuse/core')) return 'vueuse';
+                        if (id.includes('nprogress')) return 'nprogress';
+                        if (id.includes('pusher-js') || id.includes('laravel-echo')) return 'realtime';
+                        if (id.includes('vee-validate') || id.includes('yup')) return 'validation';
+                        return 'vendor';
+                    }
+                },
+            },
+        },
+    },
 });

@@ -2,9 +2,7 @@ import './bootstrap';
 import App from './App.vue';
 import { createPinia } from 'pinia';
 import ElementPlus from 'element-plus'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { fas } from '@fortawesome/free-solid-svg-icons'
-import { fab } from '@fortawesome/free-brands-svg-icons'
+import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import router from './router';
 import vue3GoogleLogin from 'vue3-google-login';
@@ -13,7 +11,41 @@ import { useAuthStore } from '@/stores/authStore';
 import { useSettingsStore } from '@/stores/settingsStore';
 import { hasPermissionDirective } from '@/plugins/permissionDirectives';
 
-library.add(fas, fab);
+import {
+    faBell,
+    faSpinner,
+    faUser,
+    faSignOutAlt,
+    faHouse,
+    faUsers,
+    faList,
+    faKey,
+    faGear,
+    faLock,
+    faPenToSquare,
+    faTrash,
+    faBan,
+    faCircleCheck,
+    faCircleQuestion,
+} from '@fortawesome/free-solid-svg-icons';
+
+library.add(
+    faBell,
+    faSpinner,
+    faUser,
+    faSignOutAlt,
+    faHouse,
+    faUsers,
+    faList,
+    faKey,
+    faGear,
+    faLock,
+    faPenToSquare,
+    faTrash,
+    faBan,
+    faCircleCheck,
+    faCircleQuestion
+);
 
 const initializeStores = async () => {
     const authStore = useAuthStore();

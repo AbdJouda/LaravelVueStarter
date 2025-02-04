@@ -50,9 +50,9 @@ export default defineConfig({
                     if (id.includes('node_modules')) {
                         if (id.includes('element-plus/es/')) return 'element-ui';
                         if (id.includes('@fortawesome')) return 'fontawesome-icons';
-                        if (id.includes('vue-router')) return 'vue-router';
-                        if (id.includes('pinia')) return 'pinia';
-                        if (id.includes('vue/dist/vue.esm-bundler.js')) return 'vue';
+                        if (id.includes('vue-router') || id.includes('pinia') || id.includes('vue')) {
+                            return 'framework'; // Keep Vue-related packages together
+                        }
                         return 'vendor';
                     }
                 }

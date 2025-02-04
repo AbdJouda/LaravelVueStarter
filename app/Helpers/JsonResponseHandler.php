@@ -173,9 +173,7 @@ class JsonResponseHandler
     public function asSuccess(): JsonResponse
     {
 
-        return $this->response->setData([
-            'payload' => $this->payload,
-        ]);
+        return $this->response->setData($this->payload);
 
     }
 
@@ -187,20 +185,14 @@ class JsonResponseHandler
     public function asFailed(): JsonResponse
     {
 
-        $response = [
-            'payload' => $this->payload,
-        ];
-
         if (config('app.debug'))
-            $response['stack_trace'] = $this->stackTrace;
+            $this->withMeta(['stack_trace' => $this->stackTrace]);
 
         if ($this->code)
-            $response['error_code'] = $this->code;
+            $this->withMeta(['error_code',$this->code]);
 
-        if ($this->httpStatusCode)
-            $response['http_status'] = $this->response->getStatusCode();
 
-        return $this->response->setData($response)
+        return $this->response->setData($this->payload)
             ->setEncodingOptions(JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 
     }

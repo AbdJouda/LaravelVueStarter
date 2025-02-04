@@ -1,26 +1,16 @@
 import {ProfileService} from '@/services/apiService';
+import { handleError } from '@/utils';
 
 export const useProfile = () => {
     const profile = ref(null);
 
-    const handleError = (error) => {
-        if (error.payload) {
-            ElMessage.error({
-                message: error.payload.message,
-            });
-        } else {
-            console.error('Error:', error.message);
-        }
-        return { error: error };
-    };
+
 
     async function fetchProfile() {
         try {
-            const { payload, error } = await ProfileService.getProfile();
+            const res = await ProfileService.getProfile();
 
-            const { attributes, relations } = payload.data;
-
-            profile.value = { ...attributes, ...relations };
+            profile.value = res.data;
 
         } catch (error) {
             handleError(error);
@@ -31,35 +21,34 @@ export const useProfile = () => {
     async function updateProfile(data) {
         try {
 
-            const { payload, error } =  await ProfileService.updateProfileInfo(data);
+            const res = await ProfileService.updateProfileInfo(data);
 
-            const { attributes, relations } = payload.data;
+            profile.value = res.data;
 
-            profile.value = { ...attributes, ...relations };
+            return { res };
 
-            return { payload };
-
-        } catch (_error) {
-            return { error: _error };
+        } catch (error) {
+            return { error: error };
         }
     }
 
-    async function updatePassword(data) {
+    async function updatePassword(payload) {
         try {
 
-            const { payload, error } = await ProfileService.updatePassword(data);
+            const res = await ProfileService.updatePassword(payload);
 
-            return { payload };
+            return { res };
 
-        } catch (_error) {
-            return { error: _error };
+        } catch (error) {
+            return { error: error };
         }
     }
 
     async function deleteAccount(data) {
         try {
-            const { payload, error } = await ProfileService.deleteAccount(data);
-            return { payload };
+            const res = await ProfileService.deleteAccount(data);
+
+            return { res };
 
         } catch (error) {
             return { error: error };

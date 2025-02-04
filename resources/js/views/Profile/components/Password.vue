@@ -30,7 +30,7 @@ const updateUserPassword = async () => {
         return;
     }
 
-    const {payload, error} = await updatePassword(values);
+    const {res, error} = await updatePassword(values);
 
 
     if (error) {
@@ -39,7 +39,7 @@ const updateUserPassword = async () => {
     }
 
     ElMessage.success({
-        message: payload?.message,
+        message: res?.message,
     });
 
     resetForm();

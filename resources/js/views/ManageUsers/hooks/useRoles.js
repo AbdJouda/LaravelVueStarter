@@ -1,4 +1,5 @@
 import {RoleService} from '@/services/apiService';
+import { handleError } from '@/utils';
 
 export const useRoles = () => {
 
@@ -7,27 +8,11 @@ export const useRoles = () => {
     const permissions = ref([]);
     const unassignedPermissions = ref([]);
 
-    const handleError = (error) => {
-        if (error.payload) {
-            ElMessage.error({
-                message: error.payload.message,
-            });
-        } else {
-            console.error('Error:', error.message);
-        }
-        return { error: error };
-    };
-
     async function fetchRoles(params = {}) {
         try {
-            const { payload } = await RoleService.getRoles(params);
+            const { data } = await RoleService.getRoles(params);
 
-            const resData = payload.data;
-
-            roles.value = resData.map((el) => ({
-                ...el.attributes,
-                ...el.relations,
-            }));
+            roles.value = data;
 
         } catch (error) {
             handleError(error);
@@ -36,11 +21,9 @@ export const useRoles = () => {
 
     async function fetchRoleDetails(roleId) {
         try {
-            const { payload, error } = await RoleService.getRoleById(roleId);
+            const { data } = await RoleService.getRoleById(roleId);
 
-            const { attributes, relations } = payload.data;
-
-            role.value = { ...attributes, ...relations };
+            role.value = data;
         } catch (error) {
             handleError(error);
         }
@@ -48,13 +31,9 @@ export const useRoles = () => {
 
     async function fetchPermissions() {
         try {
-            const { payload } = await RoleService.getPermissions();
+            const { data } = await RoleService.getPermissions();
 
-            const resData = payload.data;
-
-            permissions.value = resData.map((el) => ({
-                ...el.attributes,
-            }));
+            permissions.value = data;
 
         } catch (error) {
             handleError(error);
@@ -63,58 +42,51 @@ export const useRoles = () => {
 
     async function fetchUnassignedPermissions() {
         try {
-            const { payload } = await RoleService.getUnassignedPermissions();
+            const { data } = await RoleService.getUnassignedPermissions();
 
-            const resData = payload.data;
-
-            unassignedPermissions.value = resData.map((el) => ({
-                ...el.attributes,
-            }));
+            unassignedPermissions.value = data;
 
         } catch (error) {
             handleError(error);
         }
     }
 
-    async function createRole(data) {
+    async function createRole(payload) {
         try {
 
-            const { payload, error } =  await RoleService.createRole(data);
+            const res =  await RoleService.createRole(payload);
 
-            return { payload };
-
-        } catch (_error) {
-            return { error: _error };
+            return {res}
+        } catch (error) {
+            return { error: error };
         }
     }
 
-    async function updateRole(roleId, data) {
+    async function updateRole(roleId, payload) {
         try {
 
-            const { payload, error } =  await RoleService.updateRole(roleId, data);
+            const res =  await RoleService.updateRole(roleId, payload);
 
-            const { attributes, relations } = payload.data;
+            role.value = res.data;
 
-            role.value = { ...attributes, ...relations };
+            return { res };
 
-            return { payload };
-
-        } catch (_error) {
-            return { error: _error };
+        } catch (error) {
+            return { error: error };
         }
     }
 
     async function deleteRole(roleId, keepPermissions = false) {
         try {
 
-            const { payload, error } =  await RoleService.deleteRole(roleId, keepPermissions);
+            const res =  await RoleService.deleteRole(roleId, keepPermissions);
 
             roles.value = roles.value.filter(r => r.id !== roleId);
 
-            return { payload };
+            return { res };
 
-        } catch (_error) {
-            return { error: _error };
+        } catch (error) {
+            return { error: error };
         }
     }
 

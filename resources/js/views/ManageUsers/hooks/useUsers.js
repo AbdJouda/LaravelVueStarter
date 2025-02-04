@@ -1,4 +1,5 @@
 import {UserService} from '@/services/apiService';
+import {handleError} from '@/utils';
 
 export const useUsers = () => {
 
@@ -6,28 +7,12 @@ export const useUsers = () => {
     const user = ref(null);
     const pagination = ref(null);
 
-    const handleError = (error) => {
-        if (error.payload) {
-            ElMessage.error({
-                message: error.payload.message,
-            });
-        } else {
-            console.error('Error:', error.message);
-        }
-        return { error: error };
-    };
-
     async function fetchUsers(params = {}) {
         try {
-            const { payload } = await UserService.getUsers(params);
+            const {data, meta} = await UserService.getUsers(params);
 
-            const resData = payload.data;
-
-            users.value = resData.map((el) => ({
-                ...el.attributes,
-                ...el.relations,
-            }));
-            pagination.value = payload.meta;
+            users.value = data;
+            pagination.value = meta.pagination;
         } catch (error) {
             handleError(error);
         }
@@ -35,55 +20,48 @@ export const useUsers = () => {
 
     async function fetchUserDetails(userId) {
         try {
-            const response = await UserService.getUserById(userId);
+            const {data} = await UserService.getUserById(userId);
 
-            const { attributes, relations } = response.payload.data;
-
-            user.value = { ...attributes, ...relations };
+            user.value = data;
 
         } catch (error) {
             handleError(error);
         }
     }
 
-    async function createUser( data) {
+    async function createUser(payload) {
         try {
 
-            const { payload, error } = await UserService.createUser(data);
+            const res = await UserService.createUser(payload);
 
-            const { attributes, relations } = payload.data;
+            user.value = res.data;
 
-            user.value = { ...attributes, ...relations };
+            return {res};
 
-            return { payload };
-
-        } catch (_error) {
-            return { error: _error };
+        } catch (error) {
+            return {error: error};
         }
     }
 
-    async function updateUser(userId, data) {
+    async function updateUser(userId, payload) {
         try {
 
-            const { payload, error } = await UserService.updateUser(userId, data);
+            const res = await UserService.updateUser(userId, payload);
 
-            const { attributes, relations } = payload.data;
+            user.value = res.data;
 
-            user.value = { ...attributes, ...relations };
+            return {res};
 
-            return { payload };
-
-        } catch (_error) {
-            return { error: _error };
+        } catch (error) {
+            return {error: error};
         }
     }
-
 
 
     async function toggleUserStatus(userId) {
         try {
 
-            const { payload } = await UserService.toggleUserStatus(userId);
+            const res = await UserService.toggleUserStatus(userId);
 
             users.value = users.value.map((el) =>
                 el.id === userId
@@ -97,10 +75,10 @@ export const useUsers = () => {
                     : el
             );
 
-            return { payload };
+            return {res};
 
         } catch (error) {
-            handleError(error);
+            return {error: error};
         }
     }
 
@@ -108,14 +86,15 @@ export const useUsers = () => {
     async function resetUserPassword(userId) {
         try {
 
-            const { payload, error } = await UserService.resetUserPassword(userId);
+            const res =  await UserService.resetUserPassword(userId);
 
-            return { payload };
+            return {res};
 
-        } catch (_error) {
-            return { error: _error };
+        } catch (error) {
+            return {error: error};
         }
     }
+
     return {
         fetchUsers,
         fetchUserDetails,

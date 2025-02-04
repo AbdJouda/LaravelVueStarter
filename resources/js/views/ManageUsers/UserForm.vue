@@ -1,10 +1,10 @@
 <script setup>
-import { useCreateForm } from '@/hooks/useCreateForm';
+import {useCreateForm} from '@/hooks/useCreateForm';
 import validationSchemas from '@/utils/validationSchemas';
 import UserRolesForm from "./components/UserRolesForm.vue";
 import {useUsers} from "./hooks/useUsers.js";
-import { handleValidationError } from '@/utils';
-import { RouteNames } from "@/constants/routeNames";
+import {handleValidationError} from '@/utils';
+import {RouteNames} from "@/constants/routeNames";
 
 const route = useRoute();
 const router = useRouter();
@@ -28,7 +28,7 @@ const userForm = useCreateForm({
 });
 
 const {
-    form: { errors, values, submitForm, resetForm, meta, setErrors, setFieldValue },
+    form: {errors, values, submitForm, resetForm, meta, setErrors, setFieldValue},
     fields,
     getErrorMessage,
 } = userForm;
@@ -44,9 +44,12 @@ function initializeFormData() {
     const formattedUser = {
         ...user.value,
         is_active: user.value.is_active?.row,
+        roles: user.value.roles.map(el => el.id),
+        permissions: user.value.permissions.map(el => el.id)
+
     };
 
-    resetForm({ values: { ...formattedUser } });
+    resetForm({values: {...formattedUser}});
 }
 
 async function handleSubmit() {
@@ -60,7 +63,7 @@ async function handleSubmit() {
         ? updateUser(user.value.id, values)
         : createUser(values)
 
-    const { payload, error } = await method;
+    const {res, error} = await method;
 
     if (error) {
         handleValidationError(error, setErrors);
@@ -68,16 +71,17 @@ async function handleSubmit() {
     }
 
     ElMessage.success({
-        message: payload?.message,
+        message: res?.message,
     });
 
-    if(!userId)
+    if (!userId)
         router.push({name: RouteNames.LIST_USERS});
 }
 
 const handleRoleUpdateEvent = (value) => {
-    setFieldValue('roles',value.roles);
-    setFieldValue('permissions',value.permissions);
+    setFieldValue('roles', value.roles);
+    setFieldValue('permissions', value.permissions);
+
 };
 </script>
 <template>
@@ -122,7 +126,7 @@ const handleRoleUpdateEvent = (value) => {
                 />
             </el-form-item>
         </el-form>
-        <div class="mt-6 text-right" v-if="userId">
+        <div v-if="userId" class="mt-6 text-right">
             <el-button
                 type="primary"
                 @click="handleSubmit"
@@ -130,10 +134,10 @@ const handleRoleUpdateEvent = (value) => {
             </el-button>
         </div>
     </el-card>
-    <UserRolesForm @submit-form="handleSubmit"
-                   v-hasPermission="`assign_roles`"
-                   @update-permissions="handleRoleUpdateEvent"
-                   :selected-user="user"/>
+    <UserRolesForm v-hasPermission="`assign_roles`"
+                   :selected-user="user"
+                   @submit-form="handleSubmit"
+                   @update-permissions="handleRoleUpdateEvent"/>
 </template>
 
 

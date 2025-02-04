@@ -30,14 +30,14 @@ const openAccountDeletionPrompt = () => {
                 if (action === 'confirm') {
                     instance.confirmButtonLoading = true
                     const {inputValue: password} = instance;
-                    const {payload, error} = await deleteAccount({password: password});
+                    const {res, error} = await deleteAccount({password: password});
                     if (error) {
                         instance.confirmButtonLoading = false;
                         handleValidationError(error)
                         return
                     }
                     ElMessage.success({
-                        message: payload?.message || 'Your account has been successfully deleted.',
+                        message: res?.message || 'Your account has been successfully deleted.',
                     });
                     await logout()
                     done()

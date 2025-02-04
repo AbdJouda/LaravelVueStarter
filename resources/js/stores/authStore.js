@@ -1,12 +1,11 @@
-import { defineStore } from 'pinia';
-import { AuthService } from '@/services/apiService';
-import { getStorage, removeStorage, saveStorage } from '@/services/storageService';
-import { usePermissionStore } from '@/stores/permissionStore';
+import {defineStore} from 'pinia';
+import {AuthService} from '@/services/apiService';
+import {getStorage, removeStorage, saveStorage} from '@/services/storageService';
+import {usePermissionStore} from '@/stores/permissionStore';
 
 const useAuthStore = defineStore('auth', () => {
     const user = ref(null);
     const token = ref(null);
-    const error = ref(null);
     const permissionStore = usePermissionStore();
 
     async function initializeAuthentication() {
@@ -25,37 +24,43 @@ const useAuthStore = defineStore('auth', () => {
 
     async function login(username, password) {
         try {
-            const { payload, error } = await AuthService.login({ username, password });
+            const res = await AuthService.login({username, password});
 
-            updateAuthState(payload);
+            await updateAuthState(res);
 
-            return { payload };
+            return {res};
         } catch (error) {
-            handleError(error);
-            return { error };
+            return {error: error};
+        }
+    }
+
+    async function socialLogin(provider, code) {
+        try {
+            const res = await AuthService.login({provider, code});
+            await updateAuthState(res);
+            return { res };
+        } catch (error) {
+            return { error: error };
+
         }
     }
 
     async function logout() {
         try {
-            const { payload } = await AuthService.logout();
+            const {data} = await AuthService.logout();
             clearAuthData();
-            return { data: payload };
+            return {data: data};
         } catch (error) {
-            return { error };
+            return {error: error};
         }
     }
 
     async function updateAuthState(payload) {
-        const { attributes, relations } = payload.data || {};
-        if (attributes) {
-            setUser(attributes);
-            token.value = `${payload.meta.access_type} ${payload.meta.token}`;
-            saveStorage('authToken', token.value);
-            await permissionStore.initializeRoles();
-        } else {
-            throw new Error('Invalid payload structure');
-        }
+        const {data, meta} = payload
+        setUser(data);
+        token.value = `${meta.access_type} ${meta.token}`;
+        saveStorage('authToken', token.value);
+        await permissionStore.initializeRoles();
     }
 
 
@@ -70,21 +75,18 @@ const useAuthStore = defineStore('auth', () => {
         token.value = null;
     }
 
-    function handleError(err) {
-        error.value = err?.response?.data?.message || err.message || 'An error occurred';
-    }
 
     return {
         user,
         token,
-        error,
         initializeAuthentication,
         updateAuthState,
         login,
+        socialLogin,
         logout,
         setUser,
         clearAuthData,
     };
 });
 
-export { useAuthStore };
+export {useAuthStore};

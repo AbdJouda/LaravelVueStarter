@@ -44,7 +44,7 @@ const onLogin = async () => {
         return;
     }
 
-    const { payload, error } = await authStore.login(values.username, values.password);
+    const { error } = await authStore.login(values.username, values.password);
 
     if (rememberMe.value) {
         saveStorage('loginInfo', {...values});

@@ -78,12 +78,10 @@ class User extends Authenticatable
     /**
      * Check if user has new notifications
      *
-     * @return Attribute
+     * @return bool
      */
-    public function hasNewNotifications(): Attribute
+    public function getHasNewNotificationsAttribute(): bool
     {
-        return Attribute::make(
-            get: fn() => $this->unreadNotifications()->exists(),
-        );
+        return $this->unreadNotifications()->exists();
     }
 }

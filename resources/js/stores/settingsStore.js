@@ -9,28 +9,28 @@ const useSettingsStore = defineStore('settings', () => {
         if (isLoaded.value) return;
 
         try {
-            const {payload} = await SettingsService.getSettings();
-            settings.value = payload.data;
+            const {data} = await SettingsService.getSettings();
+            settings.value = data;
             isLoaded.value = true;
-        } catch (err) {
-            handleError(err);
+        } catch (error) {
+            handleError(error);
         }
     }
 
     async function updateSettings(data) {
         try {
 
-            const {payload} = await SettingsService.updateSettings(data);
+            const res = await SettingsService.updateSettings(data);
 
-            return {payload};
+            return {res};
 
         } catch (error) {
-            handleError(error);
+            return {error: error}
         }
     }
 
     function handleError(err) {
-        error.value = err?.response?.data?.message || err.message || 'An error occurred';
+        error.value = err.message || 'An error occurred';
         console.error('Error fetching settings:', error.value);
     }
 

@@ -1,14 +1,18 @@
 <?php
 
+use App\Concerns\Versionable;
+use App\Helpers\ApiVersionResolver;
 use App\Http\Middleware\CheckHasAnyRoleOrPermission;
 use App\Http\Middleware\SetControllerProperties;
-use Illuminate\Container\Container;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Routing\Middleware\ThrottleRequests;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Middleware\PermissionMiddleware;
+use Spatie\Permission\Middleware\RoleMiddleware;
+use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -16,11 +20,8 @@ return Application::configure(basePath: dirname(__DIR__))
         channels: __DIR__ . '/../routes/channels.php',
         health: '/up',
         then: function () {
-            $requestedVersion = Container::getInstance()->make('request')->header('api-version', 1);
 
-            $requestedVersion = in_array($requestedVersion, Config::get('settings.api.versions'))
-                ? $requestedVersion
-                : Config::get('settings.api.current_version');
+            $requestedVersion = app(ApiVersionResolver::class)->getVersion();
 
             Route::prefix('api/shared')
                 ->middleware('shared')
@@ -45,13 +46,13 @@ return Application::configure(basePath: dirname(__DIR__))
             ThrottleRequests::class . ':admin_limiter',
             CheckHasAnyRoleOrPermission::class,
             SetControllerProperties::class,
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            SubstituteBindings::class,
         ]);
 
         $middleware->alias([
-            'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
-            'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
-            'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+            'role' => RoleMiddleware::class,
+            'permission' => PermissionMiddleware::class,
+            'role_or_permission' => RoleOrPermissionMiddleware::class,
         ]);
 
     })

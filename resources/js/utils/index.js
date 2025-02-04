@@ -11,12 +11,12 @@ export const checkIsMobile = () => {
 }
 
 export function handleValidationError(error, setErrors = null) {
-    if (error?.http_status === 422) {
+    if (error?.meta?.http_status === 422) {
         if(setErrors)
-            setErrors({ ...error.payload.data });
+            setErrors({ ...error.data });
 
         ElMessage.error({
-            message: error.payload.message || 'Validation failed.',
+            message: error.message || 'Validation failed.',
         });
     } else {
         ElMessage.error({
@@ -24,7 +24,14 @@ export function handleValidationError(error, setErrors = null) {
         });
     }
 }
-
+export function handleError(error) {
+    if (error.message) {
+        ElMessage.error({
+            message: error.message,
+        });
+    }
+    return {error: error};
+}
 export const notificationHandlers = {
     'user.role.updated': async () => {
         const permissionStore = usePermissionStore();

@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Exceptions\Handler;
+use App\Helpers\ApiVersionResolver;
 use App\Helpers\JsonResponseHandler;
+use App\Helpers\ResourceMapper;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler;
@@ -26,13 +28,19 @@ class AppServiceProvider extends ServiceProvider
             Handler::class
         );
 
+        $this->app->singleton(ApiVersionResolver::class, function ($app) {
+            $request = Container::getInstance()->make('request');
+            return new ApiVersionResolver($request);
+        });
+
+
         if (!$this->app->isProduction()) {
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
             $this->app->register(TelescopeServiceProvider::class);
         }
 
         $this->app->singleton('boss-response', function (Container $app) {
-            return new JsonResponseHandler($app['request'], new JsonResponse);
+            return new JsonResponseHandler($app['request'], new JsonResponse, new ResourceMapper);
         });
     }
 

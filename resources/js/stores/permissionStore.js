@@ -16,18 +16,10 @@ const usePermissionStore = defineStore('permissions', () => {
     async function fetchRoles(noGlobalLoading = false) {
 
         try {
-            const {payload, error} = await ProfileService.getRoles(noGlobalLoading);
+            const {data} = await ProfileService.getRoles(noGlobalLoading);
 
-            const {attributes, relations} = payload.data;
-
-            roles.value = relations.roles.map((el) => ({
-                ...el.attributes,
-            }));
-
-            permissions.value = relations.permissions.map((el) => ({
-                ...el.attributes,
-            }));
-
+            roles.value = data.roles;
+            permissions.value = data.permissions;
             hasLoadedPermissions.value = true;
         } catch (error) {
             console.error("Error fetching roles:", error);

@@ -2,11 +2,14 @@
 
 namespace App\Helpers;
 
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use InvalidArgumentException;
 use stdClass;
 use Symfony\Component\HttpFoundation\Response as Status;
+
 
 class JsonResponseHandler
 {
@@ -22,19 +25,20 @@ class JsonResponseHandler
      *
      * @param Request $request
      * @param JsonResponse $response
+     * @param ResourceMapper $resourceMapper
      * @param string $message
      * @param int $code
      * @param int $httpStatusCode
      * @param array $stackTrace
-     * @return void
      */
     public function __construct(
-        protected Request      $request,
-        protected JsonResponse $response,
-        protected string       $message = '',
-        protected int          $code = 0,
-        protected int          $httpStatusCode = Status::HTTP_OK,
-        protected array        $stackTrace = []
+        protected Request        $request,
+        protected JsonResponse   $response,
+        protected ResourceMapper $resourceMapper,
+        protected string         $message = '',
+        protected int            $code = 0,
+        protected int            $httpStatusCode = Status::HTTP_OK,
+        protected array          $stackTrace = [],
     )
     {
         if ($callback = $this->request->query('callback')) {
@@ -44,7 +48,10 @@ class JsonResponseHandler
         $this->payload = [
             'message' => '',
             'data' => new stdClass(),
-            'meta' => new stdClass(),
+            'meta' => [
+                'version' => app(ApiVersionResolver::class)->getVersion(),
+                'http_status' => Status::HTTP_OK,
+            ],
         ];
     }
 
@@ -71,7 +78,13 @@ class JsonResponseHandler
     public function withData(mixed $data): self
     {
 
-        $this->payload['data'] = $data;
+        if ($data instanceof LengthAwarePaginator) {
+
+            $this->payload['data'] = $this->resourceMapper->transform(collect($data->items()));
+            $this->withMeta(['pagination' => $this->resourceMapper->transform($data)]);
+        } else {
+            $this->payload['data'] = $this->resourceMapper->transform($data);
+        }
 
         return $this;
     }
@@ -84,8 +97,11 @@ class JsonResponseHandler
      */
     public function withMeta(mixed $meta): self
     {
+        $meta = $meta instanceof Arrayable
+            ? $meta->toArray()
+            : (array)$meta;
 
-        $this->payload['meta'] = $meta;
+        $this->payload['meta'] = array_merge($this->payload['meta'], $meta);
 
         return $this;
     }
@@ -126,18 +142,18 @@ class JsonResponseHandler
      */
     public function withHttpStatusCode(int $code): self
     {
+        $this->httpStatusCode = $code;
+        $this->withMeta(['http_status' => $code]);
         try {
-
             $this->response->setStatusCode($code);
-
         } catch (InvalidArgumentException $exception) {
-
+            $this->httpStatusCode = Status::HTTP_INTERNAL_SERVER_ERROR;
+            $this->withMeta(['http_status' => Status::HTTP_INTERNAL_SERVER_ERROR]);
             $this->response->setStatusCode(Status::HTTP_INTERNAL_SERVER_ERROR);
-
         }
-
         return $this;
     }
+
 
     /**
      * Set custom error code
@@ -189,7 +205,7 @@ class JsonResponseHandler
             $this->withMeta(['stack_trace' => $this->stackTrace]);
 
         if ($this->code)
-            $this->withMeta(['error_code',$this->code]);
+            $this->withMeta(['error_code', $this->code]);
 
 
         return $this->response->setData($this->payload)

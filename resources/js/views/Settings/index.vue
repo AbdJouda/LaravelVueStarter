@@ -96,7 +96,7 @@ async function handleSubmit() {
         return;
     }
 
-    const {payload, error} = await settingsStore.updateSettings(values);
+    const {res, error} = await settingsStore.updateSettings(values);
 
 
     if (error) {
@@ -106,7 +106,7 @@ async function handleSubmit() {
     settingsUpdated.value = true;
 
     ElMessage.success({
-        message: payload?.message,
+        message: res?.message,
     });
 
 

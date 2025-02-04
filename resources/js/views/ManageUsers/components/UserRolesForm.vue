@@ -32,11 +32,11 @@ watch(
     () => props.selectedUser,
     (newUser) => {
         if (newUser) {
-            checkedRoles.value = newUser.roles?.map((role) => role.attributes.id);
-            checkedPermissions.value = newUser.permissions?.map(
-                (permission) => permission.attributes.id
-            );
 
+            checkedRoles.value = newUser.roles?.map((role) => role.id);
+            checkedPermissions.value = newUser.permissions?.map(
+                (permission) => permission.id
+            );
         }
     },
     {immediate: true}
@@ -63,14 +63,14 @@ function toggleRole(role) {
         checkedPermissions.value = checkedPermissions.value.filter(
             (permId) =>
                 !role.permissions.some(
-                    (permission) => permission.attributes.id === permId
+                    (permission) => permission.id === permId
                 )
         );
     } else {
         checkedRoles.value?.push(role.id);
         role.permissions.forEach((permission) => {
-            if (!checkedPermissions.value?.includes(permission.attributes.id)) {
-                checkedPermissions.value?.push(permission.attributes.id);
+            if (!checkedPermissions.value?.includes(permission.id)) {
+                checkedPermissions.value?.push(permission.id);
             }
         });
     }
@@ -86,7 +86,7 @@ function isRoleChecked(roleId) {
 
 function handlePermissionChange(role) {
     const allPermissionsSelected = role.permissions.every((permission) =>
-        checkedPermissions.value.includes(permission.attributes.id)
+        checkedPermissions.value.includes(permission.id)
     );
 
     if (allPermissionsSelected) {
@@ -96,7 +96,6 @@ function handlePermissionChange(role) {
     } else {
         checkedRoles.value = checkedRoles.value?.filter((id) => id !== role.id);
     }
-
     emitChanges();
 }
 
@@ -171,8 +170,8 @@ async function emitChanges() {
                     <div v-for="permission in role.permissions" :key="permission.id">
                         <el-checkbox-group v-model="checkedPermissions" border>
                             <el-checkbox
-                                :label="permission.attributes.display_name"
-                                :value="permission.attributes.id"
+                                :label="permission.display_name"
+                                :value="permission.id"
                                 class="capitalize text-gray-700 focus:ring-2 focus:ring-indigo-500 rounded-md transition-all"
                                 @change="handlePermissionChange(role)"
                             >

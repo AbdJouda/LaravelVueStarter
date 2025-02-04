@@ -15,16 +15,12 @@ class RoleResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'attributes' => [
-                'id' => $this->getKey(),
-                'name' => $this->name,
-                'display_name' => $this->display_name,
-                'users_count' => $this->whenCounted('users'),
-                'permissions_count' => $this->whenCounted('permissions'),
-            ],
-            'relations' => [
-                'permissions' => RoleResource::collection($this->whenLoaded('permissions'))
-            ],
+            'id' => $this->getKey(),
+            'name' => $this->name,
+            'display_name' => $this->display_name,
+            'users_count' => $this->whenCounted('users'),
+            'permissions_count' => $this->whenCounted('permissions'),
+            'permissions' => RoleResource::collection($this->whenLoaded('permissions'))
         ];
     }
 }

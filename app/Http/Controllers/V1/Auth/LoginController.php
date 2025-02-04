@@ -51,7 +51,7 @@ class LoginController extends Controller
         $user = $this->getUser($request, $socialUser);
 
         if (!$user || !$user->isActive()) {
-            $this->throwFailedAuthenticationException($request, !$user?->isActive());
+            $this->throwFailedAuthenticationException($request, $user && !$user->isActive());
         }
 
         return $this->successfulResponse($user);
@@ -103,6 +103,8 @@ class LoginController extends Controller
      */
     protected function throwFailedAuthenticationException($request, bool $isSuspendedAccount = false): void
     {
+        logger('user',[$isSuspendedAccount]);
+
         RateLimiter::hit($this->throttleKey($request), 300);
 
         throw ValidationException::withMessages([

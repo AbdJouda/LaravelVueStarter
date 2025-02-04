@@ -39,18 +39,14 @@ async function fetchNotifications(queryObj = {}, preventLoading = false) {
     if (!preventLoading) loading.value.fetch = true;
 
     try {
-        const {payload} = await ProfileService.getNotifications({
-            ...queryObj, per_page: 8
+        const {data,meta} = await ProfileService.getNotifications({
+            ...queryObj, per_page: 2
         });
 
-        const res = payload.data.map((el) => ({
-            ...el.attributes,
-        }));
+        notifications.value = queryObj.page ? [...notifications.value, ...data] : data;
+        pagination.value = meta.pagination;
 
-        notifications.value = queryObj.page ? [...notifications.value, ...res] : res;
-        pagination.value = payload.meta;
-
-        if (!pagination.value.next_page_url) noMoreData.value = true;
+        if (!pagination.value?.next_page_url) noMoreData.value = true;
     } catch (error) {
         console.error('Failed to fetch notifications:', error);
         notifications.value = [];

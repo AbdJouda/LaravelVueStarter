@@ -5,8 +5,6 @@ namespace App\Http\Controllers\V1\Admin;
 use App\Facades\BossResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\UserRequest;
-use App\Http\Resources\V1\PaginationResource;
-use App\Http\Resources\V1\UserResource;
 use App\Models\User;
 use App\Notifications\V1\AutoUserPasswordResetNotification;
 use App\Notifications\V1\NewUserCreatedNotification;
@@ -36,8 +34,7 @@ class UserController extends Controller
             ->orderBy($this->sortBy, $this->sortDir)
             ->paginate($this->perPage);
 
-        return BossResponse::withData(UserResource::collection($users))
-            ->withMeta(PaginationResource::make($users))
+        return BossResponse::withData($users)
             ->asSuccess();
     }
 
@@ -52,7 +49,7 @@ class UserController extends Controller
         $message = $user->toggleActiveStatus();
 
         return BossResponse::withMessage($message)
-            ->withData(UserResource::make($user))
+            ->withData($user)
             ->asSuccess();
     }
 
@@ -65,7 +62,7 @@ class UserController extends Controller
     public function geUserDetails(User $user): JsonResponse
     {
 
-        return BossResponse::withData(UserResource::make($user->load('roles', 'permissions')))
+        return BossResponse::withData($user->load('roles', 'permissions'))
             ->asSuccess();
     }
 
@@ -98,7 +95,7 @@ class UserController extends Controller
         ]);
 
         return BossResponse::withMessage($message)
-            ->withData(UserResource::make($user->load('roles', 'permissions')))
+            ->withData($user->load('roles', 'permissions'))
             ->asSuccess();
     }
 
@@ -143,7 +140,7 @@ class UserController extends Controller
         $user->notify(new AutoUserPasswordResetNotification($password));
 
         return BossResponse::withMessage(__('actions.success.action', ['action' => __("reset user's password")]))
-            ->withData(UserResource::make($user))
+            ->withData($user)
             ->asSuccess();
     }
 }

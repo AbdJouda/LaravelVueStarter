@@ -87,7 +87,7 @@ const updateProfileDetails = async () => {
         return;
     }
 
-    const {payload, error} = await updateProfile(values);
+    const {res, error} = await updateProfile(values);
 
 
     if (error) {
@@ -95,10 +95,10 @@ const updateProfileDetails = async () => {
         return;
     }
 
-    authStore.setUser(payload.data.attributes);
+    authStore.setUser(res.data);
 
     ElMessage.success({
-        message: payload?.message,
+        message: res?.message,
     });
 
     resetCropper();
@@ -116,7 +116,7 @@ const updateProfileDetails = async () => {
                         <el-avatar
                             :size="80"
                             @click="triggerFileInput"
-                            :src="croppedImage || user.profile_photo_url"
+                            :src="croppedImage || user?.profile_photo_url"
                             class="ring-2 ring-sky-300 dark:bg-gray-300 hover:cursor-pointer"
                         />
                         <div>

@@ -8,42 +8,42 @@ import FacebookIcon from "../../components/Icons/FacebookIcon.vue";
 import { RouteNames } from '@/constants/routeNames'
 
 const authStore = useAuthStore();
-
-const facebookClientId = import.meta.env.VITE_FACEBOOK_CLIENT_ID
 const router = useRouter();
 
-const googleLogin = () => {
-    googleTokenLogin().then((response) => {
+const facebookClientId = import.meta.env.VITE_FACEBOOK_CLIENT_ID
+
+const googleLogin = async () => {
+    try {
+        const response = await googleTokenLogin();
         const token = response.access_token;
-        onSocialLogin('google', token);
-    })
-}
-
-
-const onSocialLogin = async (provider, code) => {
-
-    const res = await authStore.socialLogin(provider, code);
-
-    if (res.error) {
-        ElMessage.error({
-            message: res.error?.payload?.message,
-        });
-
-        return;
+        await onSocialLogin('google', token);
+    } catch (error) {
+        console.error('Google login failed:', error);
+        ElMessage.error('Google login failed. Please try again.');
     }
-
-    await router.push({name: RouteNames.DASHBOARD});
-
 };
+
 const onFbSuccess = (response) => {
     const token = response.authResponse.accessToken;
     onSocialLogin('facebook', token);
-}
+};
 
 const onFbFailure = (response) => {
-    console.log(response);
-}
+    console.error('Facebook login failed:', response);
+    ElMessage.error('Facebook login failed. Please try again.');
+};
 
+
+const onSocialLogin = async (provider, code) => {
+    const {error} = await authStore.socialLogin(provider, code);
+
+    if (error) {
+        ElMessage.error(error?.message || 'Login failed. Please try again.');
+        return;
+    }
+
+    await router.push({ name: RouteNames.DASHBOARD });
+};
 
 </script>
 

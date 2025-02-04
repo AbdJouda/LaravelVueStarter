@@ -50,7 +50,7 @@ onMounted(async () => {
 function initializeFormData() {
     if (role.value) {
         setFieldValue('name', role.value.display_name);
-        selectedPermissions.value = role.value.permissions.map(permission => permission.attributes.id);
+        selectedPermissions.value = role.value.permissions.map(permission => permission.id);
         setOriginalPermissions();
         resetForm({values: {...values}});
     }
@@ -82,21 +82,21 @@ const handleRoleUpdate = () => {
 };
 
 const handleRoleCreation = async () => {
-    const { payload, error } = await createRole({
+    const {res, error} = await createRole({
         ...values,
         permissions: selectedPermissions.value,
     });
 
     if (error) return handleValidationError(error, setErrors);
 
-    ElMessage.success({ message: payload?.message });
+    ElMessage.success({ message: res?.message });
 
     router.push({name: RouteNames.LIST_ROLES});
 
 };
 
 const updateExistingRole = async (applyToUsers = false) => {
-    const { payload, error } = await updateRole(role.value.id, {
+    const { res, error } = await updateRole(role.value.id, {
         ...values,
         permissions: selectedPermissions.value,
         apply_to_users: applyToUsers,
@@ -104,7 +104,7 @@ const updateExistingRole = async (applyToUsers = false) => {
 
     if (error) return handleValidationError(error, setErrors);
 
-    ElMessage.success({ message: payload?.message });
+    ElMessage.success({ message: res?.message });
     isDialogVisible.value = false;
     setOriginalPermissions();
 };

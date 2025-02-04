@@ -29,7 +29,7 @@ const filterTag = (value, row) => row.is_active.row === value;
 
 const changeStatus = async (user) =>{
 
-    const { payload, error } = await toggleUserStatus(user.id);
+    const {res, error} = await toggleUserStatus(user.id);
 
     if (error) {
         handleValidationError(error);
@@ -37,14 +37,14 @@ const changeStatus = async (user) =>{
     }
 
     ElMessage.success({
-        message: payload.message,
+        message: res.message,
     });
 
 
 }
 const resetPassword = async (user) =>{
 
-    const { payload, error } = await resetUserPassword(user.id);
+    const {res, error} = await resetUserPassword(user.id);
 
     if (error) {
         handleValidationError(error);
@@ -52,7 +52,7 @@ const resetPassword = async (user) =>{
     }
 
     ElMessage.success({
-        message: payload?.message,
+        message: res?.message,
     });
 
 }
@@ -106,7 +106,7 @@ const confirmResetPassword = (user) => {
                     round
                     size="small"
                     type="primary">
-                    {{ role.attributes.display_name }}
+                    {{ role.display_name }}
                 </el-tag>
             </template>
         </el-table-column>

@@ -15,7 +15,6 @@ class UserResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'attributes' => [
                 'id' => $this->getKey(),
                 'name' => $this->whenHas('name'),
                 'email' => $this->whenHas('email'),
@@ -24,11 +23,8 @@ class UserResource extends JsonResource
                 'profile_photo_url' => $this->whenHas('profile_photo_path', $this->profile_photo_url),
                 'permissions_count' => $this->whenCounted('permissions'),
                 'has_new_notifications' => $this->whenAppended('hasNewNotifications'),
-            ],
-            'relations' => [
                 'roles' => RoleResource::collection($this->whenLoaded('roles')),
                 'permissions' => RoleResource::collection($this->whenLoaded('permissions')),
-            ],
         ];
     }
 }

@@ -6,17 +6,10 @@ use App\Events\AccountDeletionRequested;
 use App\Facades\BossResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\ProfileRequest;
-use App\Http\Resources\V1\NotificationResource;
-use App\Http\Resources\V1\PaginationResource;
-use App\Http\Resources\V1\UserResource;
-use App\Models\User;
-use Carbon\CarbonInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Validation\Rules\Password;
 
 class ProfileController extends Controller
@@ -30,7 +23,7 @@ class ProfileController extends Controller
     {
         $user = $this->user;
 
-        return BossResponse::withData(UserResource::make($user))
+        return BossResponse::withData($user)
             ->asSuccess();
     }
 
@@ -41,7 +34,7 @@ class ProfileController extends Controller
      */
     public function getRoles(): JsonResponse
     {
-        return BossResponse::withData(UserResource::make($this->user->load('roles', 'permissions')))
+        return BossResponse::withData($this->user->load('roles', 'permissions'))
             ->asSuccess();
     }
 
@@ -63,10 +56,9 @@ class ProfileController extends Controller
 
         $this->user->update($userData);
 
-//        User::findOrFail('9e016994-0ab2-43e9-8e5e-7fec13b7565e')->forceDelete();
 
         return BossResponse::withMessage(__('actions.success.update', ['name' => __('Profile')]))
-            ->withData(UserResource::make($this->user))
+            ->withData($this->user)
             ->asSuccess();
     }
 
@@ -128,8 +120,7 @@ class ProfileController extends Controller
 
         $this->markNewNotificationsAsRead($notifications->items());
 
-        return BossResponse::withData(NotificationResource::collection($notifications))
-            ->withMeta(PaginationResource::make($notifications))
+        return BossResponse::withData($notifications)
             ->asSuccess();
     }
 
@@ -147,7 +138,6 @@ class ProfileController extends Controller
             ->whereIn('id', Arr::pluck($notifications,'id'))
             ->whereNull('read_at')
             ->update(['read_at' => now()]);
-//
 
     }
 

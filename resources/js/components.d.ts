@@ -8,7 +8,6 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppleIcon: typeof import('./components/Icons/AppleIcon.vue')['default']
-    AuthLayout: typeof import('./views/Auth/components/AuthLayout.vue')['default']
     BreadcrumbDefault: typeof import('./components/Breadcrumbs/BreadcrumbDefault.vue')['default']
     DarkModeSwitcher: typeof import('./components/Header/DarkModeSwitcher.vue')['default']
     DropdownMessage: typeof import('./components/Header/DropdownMessage.vue')['default']
@@ -20,7 +19,6 @@ declare module 'vue' {
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElCheckboxGroup: typeof import('element-plus/es')['ElCheckboxGroup']
-    ElCollapseTransition: typeof import('element-plus/es')['ElCollapseTransition']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElEmpty: typeof import('element-plus/es')['ElEmpty']
     ElForm: typeof import('element-plus/es')['ElForm']
@@ -35,19 +33,14 @@ declare module 'vue' {
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
-    ElUpload: typeof import('element-plus/es')['ElUpload']
     FacebookIcon: typeof import('./components/Icons/FacebookIcon.vue')['default']
-    ForgotPasswordForm: typeof import('./views/Auth/components/ForgotPasswordForm.vue')['default']
     GoogleIcon: typeof import('./components/Icons/GoogleIcon.vue')['default']
     HeaderArea: typeof import('./components/Header/HeaderArea.vue')['default']
-    LoginForm: typeof import('./views/Auth/components/LoginForm.vue')['default']
-    ResetPasswordForm: typeof import('./views/Auth/components/ResetPasswordForm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SidebarArea: typeof import('./components/Sidebar/SidebarArea.vue')['default']
     SidebarDropdown: typeof import('./components/Sidebar/SidebarDropdown.vue')['default']
     SidebarItem: typeof import('./components/Sidebar/SidebarItem.vue')['default']
-    VerifyResetCodeForm: typeof import('./views/Auth/components/VerifyResetCodeForm.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

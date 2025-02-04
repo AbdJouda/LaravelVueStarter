@@ -21,7 +21,7 @@ const {
 
 const deleteRole = async (keepPermissions = false) => {
 
-    const { payload, error } = await deleteRoleApi(selectedRole.value.id, keepPermissions);
+    const { res, error } = await deleteRoleApi(selectedRole.value.id, keepPermissions);
 
     resetDialog();
 
@@ -31,7 +31,7 @@ const deleteRole = async (keepPermissions = false) => {
     }
 
     ElMessage.success({
-        message: payload?.message,
+        message: res?.message,
     });
 
 };

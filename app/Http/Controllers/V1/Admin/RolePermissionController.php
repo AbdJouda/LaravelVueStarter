@@ -5,7 +5,6 @@ namespace App\Http\Controllers\V1\Admin;
 use App\Facades\BossResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\RoleRequest;
-use App\Http\Resources\V1\RoleResource;
 use App\Jobs\RemoveUsersPermissionsJob;
 use App\Jobs\UpdateUsersPermissionsJob;
 use App\Models\Permission;
@@ -33,7 +32,7 @@ class RolePermissionController extends Controller
             ->latest()
             ->get();
 
-        return BossResponse::withData(RoleResource::collection($roles))
+        return BossResponse::withData($roles)
             ->asSuccess();
     }
 
@@ -46,7 +45,7 @@ class RolePermissionController extends Controller
     public function getRoleDetails(Role $role): JsonResponse
     {
 
-        return BossResponse::withData(RoleResource::make($role->load('permissions')))
+        return BossResponse::withData($role->load('permissions'))
             ->asSuccess();
     }
 
@@ -61,7 +60,7 @@ class RolePermissionController extends Controller
         $permissions = Permission::query()
             ->get();
 
-        return BossResponse::withData(RoleResource::collection($permissions))
+        return BossResponse::withData($permissions)
             ->asSuccess();
     }
 
@@ -77,7 +76,7 @@ class RolePermissionController extends Controller
             ->whereDoesntHave('roles')
             ->get();
 
-        return BossResponse::withData(RoleResource::collection($permissions))
+        return BossResponse::withData($permissions)
             ->asSuccess();
     }
 
@@ -91,6 +90,7 @@ class RolePermissionController extends Controller
      */
     public function createUpdateRole(RoleRequest $request, Role $role): JsonResponse
     {
+
         $isNewRole = !$role->exists;
 
         $role->fill($request->only('name'))->save();
@@ -112,7 +112,7 @@ class RolePermissionController extends Controller
         ]);
 
         return BossResponse::withMessage($message)
-            ->withData(RoleResource::make($role))
+            ->withData($role)
             ->asSuccess();
     }
 

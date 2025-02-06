@@ -14,7 +14,7 @@ return new class extends Migration {
         Schema::create('todos', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('title')->index();
-            $table->text('description')->nullable()->index();
+            $table->text('description')->nullable();
             $table->boolean('is_completed')->default(false);
             $table->date('due_date')->nullable();
             $table->enum('priority', TodoPriorities::getAllValues())->default(TodoPriorities::MEDIUM->value);

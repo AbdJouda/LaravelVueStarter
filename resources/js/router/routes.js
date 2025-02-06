@@ -130,6 +130,16 @@ const routes = [
         },
     },
     {
+        path: '/' + RouteNames.TODO_LIST,
+        name: RouteNames.TODO_LIST,
+        component: () => import('@/views/Todo/index.vue'),
+        meta: {
+            title: 'Todo List',
+            requiresAuth: true,
+            parentPath: RouteNames.DASHBOARD,
+        },
+    },
+    {
         path: '/' + RouteNames.FORBIDDEN_ACCESS,
         name: RouteNames.FORBIDDEN_ACCESS,
         component: () => import('@/views/Error/403.vue'),

@@ -2,7 +2,7 @@
 import {useCreateForm} from '@/hooks/useCreateForm';
 import validationSchemas from '@/utils/validationSchemas';
 import {useRoles} from './hooks/useRoles.js';
-import { handleValidationError } from '@/utils';
+import { handleError } from '@/utils';
 import { RouteNames } from "@/constants/routeNames";
 
 const route = useRoute();
@@ -87,7 +87,7 @@ const handleRoleCreation = async () => {
         permissions: selectedPermissions.value,
     });
 
-    if (error) return handleValidationError(error, setErrors);
+    if (error) return handleError(error, setErrors);
 
     ElMessage.success({ message: res?.message });
 
@@ -102,7 +102,7 @@ const updateExistingRole = async (applyToUsers = false) => {
         apply_to_users: applyToUsers,
     });
 
-    if (error) return handleValidationError(error, setErrors);
+    if (error) return handleError(error, setErrors);
 
     ElMessage.success({ message: res?.message });
     isDialogVisible.value = false;

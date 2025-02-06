@@ -1,7 +1,7 @@
 <script setup>
 import {useAuthStore} from '@/stores/authStore';
 import {useProfile} from '../hooks/useProfile';
-import {dataURLToFile, handleValidationError} from '@/utils';
+import {dataURLToFile, handleError} from '@/utils';
 import {useCreateForm} from '@/hooks/useCreateForm';
 import validationSchemas from '@/utils/validationSchemas';
 import {CircleStencil, Cropper} from 'vue-advanced-cropper';
@@ -91,7 +91,7 @@ const updateProfileDetails = async () => {
 
 
     if (error) {
-        handleValidationError(error, setErrors);
+        handleError(error, setErrors);
         return;
     }
 

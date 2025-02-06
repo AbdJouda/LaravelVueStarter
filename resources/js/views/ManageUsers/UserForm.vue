@@ -3,7 +3,7 @@ import {useCreateForm} from '@/hooks/useCreateForm';
 import validationSchemas from '@/utils/validationSchemas';
 import UserRolesForm from "./components/UserRolesForm.vue";
 import {useUsers} from "./hooks/useUsers.js";
-import {handleValidationError} from '@/utils';
+import {handleError} from '@/utils';
 import {RouteNames} from "@/constants/routeNames";
 
 const route = useRoute();
@@ -66,7 +66,7 @@ async function handleSubmit() {
     const {res, error} = await method;
 
     if (error) {
-        handleValidationError(error, setErrors);
+        handleError(error, setErrors);
         return;
     }
 

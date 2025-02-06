@@ -1,6 +1,6 @@
 <script setup>
 import {useProfile} from '../hooks/useProfile';
-import {handleValidationError} from '@/utils';
+import {handleError} from '@/utils';
 import {useAuthStore} from '@/stores/authStore';
 import {RouteNames} from '@/constants/routeNames'
 
@@ -33,7 +33,7 @@ const openAccountDeletionPrompt = () => {
                     const {res, error} = await deleteAccount({password: password});
                     if (error) {
                         instance.confirmButtonLoading = false;
-                        handleValidationError(error)
+                        handleError(error)
                         return
                     }
                     ElMessage.success({

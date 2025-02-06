@@ -1,7 +1,7 @@
 <script setup>
 import {useCreateForm} from '@/hooks/useCreateForm';
 import validationSchemas from '@/utils/validationSchemas';
-import {handleValidationError} from '@/utils';
+import {handleError} from '@/utils';
 import {AuthService} from '@/services/apiService';
 
 const router = useRouter();
@@ -39,7 +39,7 @@ const onSendForgotPasswordRequest = async () => {
 
         fields.username.resetField();
     } catch (error) {
-        handleValidationError(error, setErrors);
+        handleError(error, setErrors);
     }
 }
 

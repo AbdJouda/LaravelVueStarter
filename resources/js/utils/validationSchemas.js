@@ -98,6 +98,14 @@ const updateSettingsSchema = Yup.object().shape({
         }),
 });
 
+const todoSchema = Yup.object().shape({
+    title: Yup.string().required(REQ_MSG),
+    description: Yup.string().nullable(),
+    due_date: Yup.date().nullable(),
+    priority: Yup.string()
+        .oneOf(['Low', 'Medium', 'High'], 'Invalid priority')
+        .default('Medium'),
+});
 
 const validationSchemas = {
     loginSchema,
@@ -107,7 +115,8 @@ const validationSchemas = {
     updatePasswordSchema,
     userSchema,
     updateRoleSchema,
-    updateSettingsSchema
+    updateSettingsSchema,
+    todoSchema,
 };
 
 export default validationSchemas;

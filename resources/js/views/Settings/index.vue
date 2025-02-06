@@ -1,6 +1,6 @@
 <script setup>
 import { useSettingsStore } from '@/stores/settingsStore';
-import { dataURLToFile, handleValidationError } from '@/utils';
+import { dataURLToFile, handleError } from '@/utils';
 import { Cropper } from 'vue-advanced-cropper';
 import { useCreateForm } from '@/hooks/useCreateForm';
 import validationSchemas from '@/utils/validationSchemas';
@@ -100,7 +100,7 @@ async function handleSubmit() {
 
 
     if (error) {
-        handleValidationError(error, setErrors);
+        handleError(error, setErrors);
         return;
     }
     settingsUpdated.value = true;

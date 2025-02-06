@@ -37,7 +37,7 @@ export const ProfileService = {
         return httpService.get(`/shared/profile`);
     },
     getRoles(noGlobalLoading = false) {
-        return httpService.get(`/shared/profile/roles`, { noGlobalLoading });
+        return httpService.get(`/shared/profile/roles`, {noGlobalLoading});
     },
     updateProfileInfo(data) {
         return httpService.post(`/shared/profile/update`, data,
@@ -54,7 +54,7 @@ export const ProfileService = {
         return httpService.post(`/shared/profile/request-account-delete`, data);
     },
     getNotifications(params, noGlobalLoading = true) {
-        return httpService.get(`/shared/profile/notifications`,  { params,  noGlobalLoading });
+        return httpService.get(`/shared/profile/notifications`, {params, noGlobalLoading});
     },
 };
 
@@ -99,5 +99,22 @@ export const RoleService = {
     },
     deleteRole(roleId, keepPermissions = false) {
         return httpService.delete(`/admin/roles/${roleId}/delete?keep_permissions=${keepPermissions}`);
+    },
+};
+export const TodoService = {
+    getTodos(params) {
+        return httpService.get(`/shared/todos`, {params});
+    },
+    createTodo(data) {
+        return httpService.post(`/shared/todos/create`, data);
+    },
+    updateTodo(todoId, data) {
+        return httpService.patch(`/shared/todos/${todoId}/update`, data);
+    },
+    deleteTodo(todoId) {
+        return httpService.delete(`/shared/todos/${todoId}/delete`);
+    },
+    toggleCompleteStatus(todoId) {
+        return httpService.patch(`/shared/todos/${todoId}/toggle-complete-status`);
     },
 };

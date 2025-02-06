@@ -2,7 +2,7 @@
 import { useRoles } from "./hooks/useRoles";
 import { RouteNames } from "@/constants/routeNames";
 import { useTable } from "@/hooks/useTable";
-import { handleValidationError } from "@/utils"; // Centralized error handling
+import { handleError } from "@/utils";
 
 
 const { fetchRoles, deleteRole: deleteRoleApi, roles } = useRoles();
@@ -26,7 +26,7 @@ const deleteRole = async (keepPermissions = false) => {
     resetDialog();
 
     if (error) {
-        handleValidationError(error);
+        handleError(error);
         return;
     }
 

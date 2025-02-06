@@ -11,5 +11,6 @@ export const RouteNames = {
     ADD_ROLE: 'add-role',
     EDIT_ROLE: 'edit-role',
     SETTINGS: 'settings',
+    TODO_LIST: 'todo-list',
     FORBIDDEN_ACCESS: 'forbidden',
 };

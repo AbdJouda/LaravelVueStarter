@@ -8,6 +8,7 @@ const loading = computed(() => globalStore.loading)
 <template>
     <!-- ===== Page Wrapper Start ===== -->
     <div class="flex h-screen overflow-hidden">
+        <Todo />
         <!-- ===== Sidebar Start ===== -->
         <SidebarArea />
         <!-- ===== Sidebar End ===== -->

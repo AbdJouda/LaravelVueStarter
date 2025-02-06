@@ -4,7 +4,7 @@ import validationSchemas from '@/utils/validationSchemas';
 import {useAuthStore} from '@/stores/authStore';
 import {getStorage, removeStorage, saveStorage} from '@/services/storageService';
 import {RouteNames} from '@/constants/routeNames'
-import { handleValidationError } from '@/utils';
+import { handleError } from '@/utils';
 
 const router = useRouter();
 const route = useRoute();
@@ -53,7 +53,7 @@ const onLogin = async () => {
     }
 
     if (error) {
-        handleValidationError(error, setErrors);
+        handleError(error, setErrors);
         // Manually set meta.value.valid to true to avoid validation being marked as false
         // This is because calling setErrors might interfere with the form's validity state,
         // and we need to ensure the form stays valid for subsequent attempts after backend errors.

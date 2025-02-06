@@ -28,6 +28,9 @@ return [
     'Illuminate\Pagination\LengthAwarePaginator' => [
         'v1' => 'App\Http\Resources\V1\PaginationResource',
     ],
+    \App\Models\Todo::class => [
+        'v1' => 'App\Http\Resources\V1\TodoResource',
+    ],
 
 
 ];

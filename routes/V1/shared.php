@@ -6,6 +6,7 @@ use App\Http\Controllers\V1\Auth\ForgotPasswordController;
 use App\Http\Controllers\V1\Auth\LoginController;
 use App\Http\Controllers\V1\Auth\ResetPasswordController;
 use App\Http\Controllers\V1\ProfileController;
+use App\Http\Controllers\V1\TodoController;
 use App\Models\User;
 use App\Notifications\V1\UserRoleUpdateNotification;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,14 @@ Route::prefix('profile')->middleware(['auth:sanctum'])->group(function ($route) 
 
 Route::prefix('settings')->group(function ($route) {
     $route->get('', [SettingsController::class, 'getSettings']);
+});
+
+Route::prefix('todos')->middleware(['auth:sanctum'])->group(function ($route) {
+    $route->get('', [TodoController::class, 'getTodos']);
+    $route->post('/create', [TodoController::class, 'createTodo']);
+    $route->patch('{todoId}/update', [TodoController::class, 'updateTodo']);
+    $route->delete('{todoId}/delete', [TodoController::class, 'deleteTodo']);
+    $route->patch('{todoId}/toggle-complete-status', [TodoController::class, 'changeTaskCompletionStatus']);
 });
 
 Route::get('test', function () {

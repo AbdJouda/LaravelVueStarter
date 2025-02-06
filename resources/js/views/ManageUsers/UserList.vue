@@ -2,7 +2,7 @@
 import { useUsers } from "./hooks/useUsers";
 import { useTable } from "@/hooks/useTable";
 import { RouteNames } from "@/constants/routeNames";
-import { handleValidationError } from '@/utils';
+import { handleError } from '@/utils';
 
 const {
     fetchUsers,
@@ -32,7 +32,7 @@ const changeStatus = async (user) =>{
     const {res, error} = await toggleUserStatus(user.id);
 
     if (error) {
-        handleValidationError(error);
+        handleError(error);
         return;
     }
 
@@ -47,7 +47,7 @@ const resetPassword = async (user) =>{
     const {res, error} = await resetUserPassword(user.id);
 
     if (error) {
-        handleValidationError(error);
+        handleError(error);
         return;
     }
 

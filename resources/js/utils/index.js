@@ -10,21 +10,10 @@ export const checkIsMobile = () => {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
 }
 
-export function handleValidationError(error, setErrors = null) {
-    if (error?.meta?.http_status === 422) {
-        if(setErrors)
-            setErrors({ ...error.data });
-
-        ElMessage.error({
-            message: error.message || 'Validation failed.',
-        });
-    } else {
-        ElMessage.error({
-            message: error?.message || 'An error occurred.',
-        });
+export function handleError(error, setErrors = null) {
+    if(setErrors && error?.meta?.http_status === 422){
+        setErrors({ ...error.data });
     }
-}
-export function handleError(error) {
     if (error.message) {
         ElMessage.error({
             message: error.message,

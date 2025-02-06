@@ -27,6 +27,8 @@ import {
     faBan,
     faCircleCheck,
     faCircleQuestion,
+    faPlus,
+    faClose,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -44,7 +46,9 @@ library.add(
     faTrash,
     faBan,
     faCircleCheck,
-    faCircleQuestion
+    faCircleQuestion,
+    faPlus,
+    faClose,
 );
 
 const initializeStores = async () => {

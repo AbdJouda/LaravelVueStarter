@@ -46,7 +46,11 @@ const menuGroups = ref([
                 label: 'Settings',
                 route: RouteNames.SETTINGS
             },
-
+            {
+                icon: ['fas', 'list'],
+                label: 'Todo List',
+                route: RouteNames.TODO_LIST
+            },
         ]
     }
 ])

@@ -1,6 +1,6 @@
 <script setup>
 import {useProfile} from '../hooks/useProfile';
-import {handleValidationError} from '@/utils';
+import {handleError} from '@/utils';
 import {useCreateForm} from '@/hooks/useCreateForm';
 import validationSchemas from '@/utils/validationSchemas';
 
@@ -34,7 +34,7 @@ const updateUserPassword = async () => {
 
 
     if (error) {
-        handleValidationError(error, setErrors);
+        handleError(error, setErrors);
         return;
     }
 

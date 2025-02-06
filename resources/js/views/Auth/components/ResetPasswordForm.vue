@@ -1,7 +1,7 @@
 <script setup>
 import {useCreateForm} from '@/hooks/useCreateForm';
 import validationSchemas from '@/utils/validationSchemas';
-import {handleValidationError} from '@/utils';
+import {handleError} from '@/utils';
 import {AuthService} from '@/services/apiService';
 import {useAuthStore} from '@/stores/authStore';
 import {RouteNames} from '@/constants/routeNames'
@@ -63,7 +63,7 @@ const onReset = async () => {
         await router.push({name: RouteNames.DASHBOARD});
 
     } catch (error) {
-        handleValidationError(error, setErrors);
+        handleError(error, setErrors);
     }
 
 }

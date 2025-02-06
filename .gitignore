@@ -22,3 +22,4 @@ yarn-error.log
 /.vscode
 /.zed
 /resources/js/components.d.ts
+/resources/js/auto-imports.d.ts

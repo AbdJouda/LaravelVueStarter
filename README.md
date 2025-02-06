@@ -1,6 +1,9 @@
-# Laravel & Vue 3 Starter Template
+# Laravel & Vue 3 SPA Starter Template
 
-This project is a **Laravel backend (API-only) with an integrated Vue.js 3 frontend**. It serves as a robust starter template, including essential authentication and user management features with role and permissions control.
+This project is a Laravel backend (API-only) with an integrated Vue.js 3 frontend designed as a Single Page Application (SPA). It serves as a robust starter template, including essential authentication and user management features with role and permissions control.
+
+It provides a full-stack SPA setup with Laravel as the backend and Vue 3 as the frontend, making it easy to get started with building modern web applications.
+
 
 ## 📌 Features
 
@@ -24,6 +27,11 @@ This project is a **Laravel backend (API-only) with an integrated Vue.js 3 front
 - ✅ OAuth login support via **vue3-google-login** & **vue3-facebook-login**
 - ✅ TailwindCSS for styling
 - ✅ WebSockets support with **Laravel Echo & Pusher**
+
+### Additional Features
+- ✅ Todo Task Feature: Manage tasks with priority, due dates, and completion status.
+- ✅ User Profile Management: Users can update and manage their profiles.
+- ✅ Website Settings: Easily manage basic website settings like logo, favicon, and name.
 
 ## 🚀 Installation
 

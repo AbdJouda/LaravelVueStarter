@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Concerns\HasSearchables;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Todo extends Model
 {
@@ -48,5 +49,26 @@ class Todo extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Scope Upcoming Tasks
+     *
+     * @returns void
+     */
+    public function scopeUpcoming(Builder $query): void
+    {
+        $query->whereDate('due_date', '>=', new Carbon())
+        ->orWhereNull('due_date');
+    }
+
+    /**
+     * Scope Non completed Tasks
+     *
+     * @returns void
+     */
+    public function scopeNonCompleted(Builder $query): void
+    {
+        $query->where('is_completed', false);
     }
 }

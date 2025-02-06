@@ -37,6 +37,7 @@ Route::prefix('settings')->group(function ($route) {
 
 Route::prefix('todos')->middleware(['auth:sanctum'])->group(function ($route) {
     $route->get('', [TodoController::class, 'getTodos']);
+    $route->get('/upcoming', [TodoController::class, 'getUpcomingTodos']);
     $route->post('/create', [TodoController::class, 'createTodo']);
     $route->patch('{todoId}/update', [TodoController::class, 'updateTodo']);
     $route->delete('{todoId}/delete', [TodoController::class, 'deleteTodo']);

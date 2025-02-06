@@ -35,6 +35,24 @@ class TodoController extends Controller
     }
 
     /**
+     * Retrieve Upcoming Tasks.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getUpcomingTodos(Request $request): JsonResponse
+    {
+        $todos = $this->user->todos()
+            ->upcoming()
+            ->nonCompleted()
+            ->orderByRaw("FIELD(priority, 'high', 'medium', 'low')")
+            ->get();
+
+        return BossResponse::withData($todos)
+            ->asSuccess();
+    }
+
+    /**
      * Create a new task
      *
      * @param TodoRequest $request

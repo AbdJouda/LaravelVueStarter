@@ -105,6 +105,9 @@ export const TodoService = {
     getTodos(params) {
         return httpService.get(`/shared/todos`, {params});
     },
+    getUpcomingTodos() {
+        return httpService.get(`/shared/todos/upcoming`);
+    },
     createTodo(data) {
         return httpService.post(`/shared/todos/create`, data);
     },

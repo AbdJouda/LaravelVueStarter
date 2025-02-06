@@ -15,6 +15,15 @@ const useTodosStore = defineStore('todos', () => {
         }
     }
 
+    async function fetchUpcomingTodos() {
+        try {
+            const {data} = await TodoService.getUpcomingTodos();
+            todos.value = data;
+        } catch (error) {
+            handleError(error);
+        }
+    }
+
     async function createTodo(payload) {
         try {
 
@@ -82,6 +91,7 @@ const useTodosStore = defineStore('todos', () => {
 
     return {
         fetchTodos,
+        fetchUpcomingTodos,
         createTodo,
         updateTodo,
         deleteTodo,

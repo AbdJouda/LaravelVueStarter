@@ -63,10 +63,6 @@ const useTodosStore = defineStore('todos', () => {
 
             const res = await TodoService.toggleCompleteStatus(todoId);
 
-            const todo = this.todos.find(t => t.id === todoId);
-
-            if (todo) todo.is_completed = !todo.is_completed;
-
             return {res};
 
         } catch (error) {

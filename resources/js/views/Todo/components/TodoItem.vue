@@ -65,10 +65,10 @@ const handleEdit = () => {
             <div class="flex flex-col">
                 <span>
                     {{ item.title }}
-                    <el-tag v-if="item.is_completed" type="success" effect="dark" round class="ml-2">
+                    <el-tag v-if="item.is_completed" type="success" effect="dark" disable-transitions class="ml-2">
                         Completed
                     </el-tag>
-                    <el-tag v-else :type="getPriorityTagType(item.priority)" effect="dark" round class="ml-2">
+                    <el-tag v-else :type="getPriorityTagType(item.priority)" effect="dark" disable-transitions class="ml-2">
                         {{ item.priority }}
                     </el-tag>
 

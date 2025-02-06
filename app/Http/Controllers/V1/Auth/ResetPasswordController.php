@@ -5,7 +5,6 @@ namespace App\Http\Controllers\V1\Auth;
 use App\Facades\BossResponse;
 use App\Helpers\AccessTokenManager;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\V1\UserResource;
 use App\Models\AccessCode;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\JsonResponse;
@@ -87,8 +86,8 @@ class ResetPasswordController extends Controller
 
         $user->accessCodes()->for(AccessCode::PASSWORD_RESET_CODE)->delete();
 
-        return BossResponse::withData(UserResource::make($user))
-            ->withMeta(new AccessTokenManager($user))
+        return BossResponse::withData($user)
+            ->withMeta(['authentication' => new AccessTokenManager($user)])
             ->asSuccess();
     }
 

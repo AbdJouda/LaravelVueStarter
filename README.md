@@ -97,15 +97,15 @@ Content-Type: application/json
 Response:
 ```json
 {
-    "payload": {
-        "message": "",
-        "data": { ... },
-        "meta": {
-            "token": "your-access-token",
-            "type": "Bearer",
-            "permissions": ["*"],
-            "expires_in": null
-        }
+    "message": "",
+    "data": { ... },
+    "meta": {
+        "version": "1",
+        "http_status": 200,
+        "token": "your-access-token",
+        "type": "Bearer",
+        "permissions": ["*"],
+        "expires_in": null
     }
 }
 ```

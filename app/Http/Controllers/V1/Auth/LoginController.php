@@ -5,8 +5,6 @@ namespace App\Http\Controllers\V1\Auth;
 use App\Facades\BossResponse;
 use App\Helpers\AccessTokenManager;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\V1\UserResource;
-use App\Models\Permission;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -133,8 +131,8 @@ class LoginController extends Controller
     protected function successfulResponse($user): JsonResponse
     {
         /**@var User $user */
-        return BossResponse::withData(UserResource::make($user->append('hasNewNotifications')))
-            ->withMeta(new AccessTokenManager($user))
+        return BossResponse::withData($user->append('hasNewNotifications'))
+            ->withMeta(['authentication' => new AccessTokenManager($user)])
             ->asSuccess();
     }
 

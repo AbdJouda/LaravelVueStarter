@@ -43,7 +43,6 @@ const onReset = async () => {
 
     if (!code) return;
 
-
     const data = {
         username,
         code,

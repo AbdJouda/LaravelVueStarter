@@ -58,7 +58,7 @@ const useAuthStore = defineStore('auth', () => {
     async function updateAuthState(payload) {
         const {data, meta} = payload
         setUser(data);
-        token.value = `${meta.access_type} ${meta.token}`;
+        token.value = `${meta.authentication?.access_type} ${meta.authentication?.token}`;
         saveStorage('authToken', token.value);
         await permissionStore.initializeRoles();
     }

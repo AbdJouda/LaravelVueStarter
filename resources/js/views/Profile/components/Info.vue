@@ -120,8 +120,8 @@ const updateProfileDetails = async () => {
                             class="ring-2 ring-sky-300 dark:bg-gray-300 hover:cursor-pointer"
                         />
                         <div>
-                            <p class="text-lg font-medium">{{ user.name }}</p>
-                            <p class="text-gray-500">{{ user.email }}</p>
+                            <p class="text-lg font-medium">{{ user?.name }}</p>
+                            <p class="text-gray-500">{{ user?.email }}</p>
                         </div>
                     </div>
 

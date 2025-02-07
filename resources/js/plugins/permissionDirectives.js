@@ -15,8 +15,15 @@ const hasPermissionDirective = {
 
 
 function initializePermission(el, binding) {
+    if (typeof binding.value === 'undefined') {
+        el.style.display = '';
+        el.setAttribute('data-permission-status', 'granted');
+        return;
+    }
+
     el._permissionValue = binding.value;
     createPermissionWatcher(el);
+
 }
 
 function handlePermissionUpdate(el, binding) {

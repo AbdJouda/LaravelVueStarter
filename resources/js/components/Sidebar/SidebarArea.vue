@@ -66,7 +66,7 @@ const menuGroups = ref([
                         <ul class="mb-6 flex flex-col gap-1.5">
                             <SidebarItem
                                 v-for="(menuItem, index) in menuGroup.menuItems"
-                                v-hasPermission="menuItem.permissions"
+                                v-has-permission="menuItem.permissions"
                                 :key="index"
                                 :index="index"
                                 :item="menuItem"

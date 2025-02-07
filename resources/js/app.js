@@ -71,7 +71,7 @@ const createNewApp = async () => {
     app.use(router);
     app.use(ElementPlus);
     app.use(createPinia());
-    app.directive('hasPermission', hasPermissionDirective);
+    app.directive('has-permission', hasPermissionDirective);
 
     await initializeStores();
 

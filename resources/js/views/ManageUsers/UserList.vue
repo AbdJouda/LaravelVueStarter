@@ -78,7 +78,7 @@ const confirmResetPassword = (user) => {
 <template>
     <div class="mb-2 text-right">
         <el-button
-            v-hasPermission="`create_users`"
+            v-has-permission="`create_users`"
             type="primary"
             @click="() => router.push({ name: RouteNames.ADD_USER})"
         >Add new user
@@ -134,7 +134,7 @@ const confirmResetPassword = (user) => {
                 <el-input v-model="searchText" clearable placeholder="Search" size="small"/>
             </template>
             <template #default="scope">
-                <div  class="flex space-x-2" v-hasPermission="`edit_users`">
+                <div  class="flex space-x-2" v-has-permission="`edit_users`">
                 <el-tooltip content="Edit"
                             placement="bottom"
                             effect="light">

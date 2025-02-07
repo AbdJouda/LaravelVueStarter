@@ -62,7 +62,7 @@ const handleItemClick = () => {
             v-show="sidebarStore.page === item.title"
             class="overflow-hidden transition-all duration-500 ease-out">
             <SidebarDropdown
-                v-hasPermission="item.permissions"
+                v-has-permission="item.permissions"
                 :items="item.children"
             />
         </div>

@@ -171,7 +171,7 @@ const reloadPage = () => {
         <div class="mt-6 text-right">
             <el-button
                 type="primary"
-                v-hasPermission="`update_system_settings`"
+                v-has-permission="`update_system_settings`"
                 @click="handleSubmit"
             >Update
             </el-button>

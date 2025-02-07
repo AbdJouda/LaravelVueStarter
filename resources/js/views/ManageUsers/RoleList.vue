@@ -51,7 +51,7 @@ const resetDialog = () => {
 <template>
     <div class="mb-2 text-right">
         <el-button
-            v-hasPermission="`add_roles`"
+            v-has-permission="`add_roles`"
             type="primary"
             @click="() => router.push({ name: RouteNames.ADD_ROLE})"
         >Add new role
@@ -70,7 +70,7 @@ const resetDialog = () => {
                     <el-tooltip content="Edit" effect="light" placement="bottom" >
                         <font-awesome-icon :icon="['fas', 'pen-to-square']"
                                            class="fa-lg text-blue-500 cursor-pointer"
-                                           v-hasPermission="`edit_roles`"
+                                           v-has-permission="`edit_roles`"
                                            @click.stop="
                 () => router.push({ name: RouteNames.EDIT_ROLE, params: { id: scope.row.id } })"/>
                     </el-tooltip>
@@ -79,7 +79,7 @@ const resetDialog = () => {
                                 placement="bottom">
                         <font-awesome-icon
                             :icon="['fas', 'trash']"
-                            v-hasPermission="`delete_roles`"
+                            v-has-permission="`delete_roles`"
                             class="cursor-pointer text-red-500 fa-lg"
                             @click="showConfirmDialog(scope.row, scope.row.users_count !== 0)"
                         />

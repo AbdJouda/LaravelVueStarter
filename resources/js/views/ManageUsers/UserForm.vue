@@ -134,7 +134,7 @@ const handleRoleUpdateEvent = (value) => {
             </el-button>
         </div>
     </el-card>
-    <UserRolesForm v-hasPermission="`assign_roles`"
+    <UserRolesForm v-has-permission="`assign_roles`"
                    :selected-user="user"
                    @submit-form="handleSubmit"
                    @update-permissions="handleRoleUpdateEvent"/>

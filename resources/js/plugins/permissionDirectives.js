@@ -1,28 +1,58 @@
-import {usePermissionStore} from '@/stores/permissionStore';
-import {watchEffect} from 'vue';
+import { usePermissionStore } from '@/stores/permissionStore';
+import { watchEffect } from 'vue';
 
 const hasPermissionDirective = {
     mounted(el, binding) {
-        if (!binding.value) return;
-
-        const permissionStore = usePermissionStore();
-
-        el._unwatchPermission = watchEffect(() => {
-            const hasPermission = permissionStore.checkPermission(binding.value);
-
-            if (hasPermission) {
-                el.style.display = '';
-            } else {
-                el.style.display = 'none';
-            }
-        });
+        initializePermission(el, binding);
+    },
+    updated(el, binding) {
+        handlePermissionUpdate(el, binding);
     },
     unmounted(el) {
-        if (el._unwatchPermission) {
-            el._unwatchPermission();
-            delete el._unwatchPermission;
-        }
+        cleanupPermission(el);
     },
 };
+
+
+function initializePermission(el, binding) {
+    el._permissionValue = binding.value;
+    createPermissionWatcher(el);
+}
+
+function handlePermissionUpdate(el, binding) {
+    if (binding.value !== el._permissionValue) {
+        cleanupPermission(el);
+        initializePermission(el, binding);
+    }
+}
+
+function createPermissionWatcher(el) {
+    const permissionStore = usePermissionStore();
+
+    el._unwatchPermission = watchEffect(() => {
+        try {
+            const hasPermission = permissionStore.checkPermission(el._permissionValue);
+            toggleElementVisibility(el, hasPermission);
+        } catch (error) {
+            console.error('[v-has-permission] Error checking permission:', error);
+            toggleElementVisibility(el, false);
+        }
+    });
+}
+
+function toggleElementVisibility(el, isVisible) {
+    el.style.display = isVisible ? '' : 'none';
+    el.setAttribute('data-permission-status', isVisible ? 'granted' : 'denied');
+}
+
+function cleanupPermission(el) {
+    if (el._unwatchPermission) {
+        el._unwatchPermission();
+        delete el._unwatchPermission;
+        delete el._permissionValue;
+        el.style.display = '';
+        el.removeAttribute('data-permission-status');
+    }
+}
 
 export { hasPermissionDirective };

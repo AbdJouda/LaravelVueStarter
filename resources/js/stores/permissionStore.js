@@ -31,7 +31,6 @@ const usePermissionStore = defineStore('permissions', () => {
         if (roles.value.find(role => role.name === 'admin')) {
             return true;
         }
-
         return Array.isArray(permission)
             ? hasAnyPermission(permission)
             : hasPermission(permission);

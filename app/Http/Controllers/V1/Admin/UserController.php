@@ -28,6 +28,9 @@ class UserController extends Controller
         $users = User::query()
             ->where($this->user->getKeyName(), '!=', $this->user->getKey())
             ->search($request->query('search'))
+            ->whereDoesntHave('roles', function ($query) {
+                $query->where('name', 'admin');
+            })
             ->with('roles')
             ->withCount('permissions')
             ->latest()
@@ -111,7 +114,7 @@ class UserController extends Controller
         $oldPermissions = $user->permissions()->pluck('id')->toArray();
         $newPermissions = $request->permissions;
 
-         $user->syncRoles($request->only('roles'));
+        $user->syncRoles($request->only('roles'));
 
         $user->syncPermissions($newPermissions);
 

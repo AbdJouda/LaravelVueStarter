@@ -15,13 +15,13 @@ Route::prefix('users')->group(function ($route) {
     $route->post('/create', [UserController::class, 'createUpdateUser'])
         ->middleware('permission:create_users');
     $route->patch('{user}/update', [UserController::class, 'createUpdateUser'])
-        ->middleware('permission:update_users');
+        ->middleware('permission:edit_users');
     $route->get('{user}/reset-password', [UserController::class, 'resetUserPassword'])
         ->middleware('permission:edit_users');
 });
 Route::prefix('roles')->group(function ($route) {
     $route->get('/', [RolePermissionController::class, 'getRoles'])
-        ->middleware('permission:view_roles|edit_users');
+        ->middleware('permission:view_roles|assign_roles');
     $route->get('{role}/details', [RolePermissionController::class, 'getRoleDetails'])
         ->middleware('permission:edit_roles');
     $route->post('/create', [RolePermissionController::class, 'createUpdateRole'])
@@ -31,7 +31,7 @@ Route::prefix('roles')->group(function ($route) {
     $route->get('/permissions', [RolePermissionController::class, 'getPermissions'])
         ->middleware('permission:create_roles|update_roles|edit_roles');
     $route->get('/unassigned-permissions', [RolePermissionController::class, 'getUnassignedPermissions'])
-        ->middleware('permission:create_roles|update_roles|edit_roles|edit_users');
+        ->middleware('permission:create_roles|update_roles|edit_roles|assign_roles');
     $route->delete('{role}/delete', [RolePermissionController::class, 'deleteRole'])
         ->middleware('permission:delete_roles');
 });

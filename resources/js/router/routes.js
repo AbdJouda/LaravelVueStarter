@@ -41,6 +41,7 @@ const routes = [
         name: RouteNames.DASHBOARD,
         component: () => import('@/views/Dashboard/index.vue'),
         meta: {
+            icon: ['fas', 'house'],
             title: 'Dashboard',
             requiresAuth: true,
         },
@@ -50,8 +51,10 @@ const routes = [
         component: () => import('@/views/ManageUsers/index.vue'),
         meta: {
             title: 'Users',
+            icon: ['fas', 'users'],
             requiresAuth: true,
             parentPath: RouteNames.DASHBOARD,
+            permissions: ['view_users','view_roles'],
         },
         children: [
             {
@@ -59,6 +62,7 @@ const routes = [
                 name: RouteNames.LIST_USERS,
                 component: () => import('@/views/ManageUsers/UserList.vue'),
                 meta: {
+                    icon: ['fas', 'list'],
                     title: 'Users List',
                     parentPath: RouteNames.DASHBOARD,
                     permissions: 'view_users',
@@ -89,6 +93,7 @@ const routes = [
                 name: RouteNames.LIST_ROLES,
                 component: () => import('@/views/ManageUsers/RoleList.vue'),
                 meta: {
+                    icon: ['fas', 'key'],
                     title: 'Roles List',
                     parentPath: RouteNames.DASHBOARD,
                     permissions: 'view_roles',
@@ -123,6 +128,7 @@ const routes = [
         name: RouteNames.SETTINGS,
         component: () => import('@/views/Settings/index.vue'),
         meta: {
+            icon: ['fas', 'gear'],
             title: 'App Settings',
             requiresAuth: true,
             parentPath: RouteNames.DASHBOARD,
@@ -134,6 +140,7 @@ const routes = [
         name: RouteNames.TODO_LIST,
         component: () => import('@/views/Todo/index.vue'),
         meta: {
+            icon: ['fas', 'list'],
             title: 'Todo List',
             requiresAuth: true,
             parentPath: RouteNames.DASHBOARD,

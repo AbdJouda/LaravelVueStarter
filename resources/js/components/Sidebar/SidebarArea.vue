@@ -2,7 +2,7 @@
 import { useSidebarStore } from '@/stores/sidebarStore';
 import { useSettingsStore } from '@/stores/settingsStore';
 import SidebarItem from './SidebarItem.vue'
-import {RouteNames} from '@/constants/routeNames'
+import navigation from "./SidebarNav.js";
 
 const target = ref(null)
 const sidebarStore = useSidebarStore();
@@ -12,46 +12,13 @@ onClickOutside(target, () => {
     sidebarStore.isSidebarOpen = false
 })
 
+
+const menuItems = ref(navigation())
+
 const menuGroups = ref([
     {
         name: 'MENU',
-        menuItems: [
-            {
-                icon: ['fas', 'house'],
-                label: 'Dashboard',
-                route: RouteNames.DASHBOARD
-            },
-            {
-                icon: ['fas', 'users'],
-                label: 'Users & Roles',
-                route: '#',
-                permissions: ['view_users','view_roles'],
-                children: [
-                    {
-                        icon: ['fas', 'list'],
-                        label: 'Users',
-                        route: RouteNames.LIST_USERS,
-                        permissions: 'view_users',
-                    },
-                    {
-                        icon: ['fas', 'key'],
-                        label: 'Roles',
-                        route: RouteNames.LIST_ROLES,
-                        permissions: 'view_roles',
-                    }
-                ]
-            },
-            {
-                icon: ['fas', 'gear'],
-                label: 'Settings',
-                route: RouteNames.SETTINGS
-            },
-            {
-                icon: ['fas', 'list'],
-                label: 'Todo List',
-                route: RouteNames.TODO_LIST
-            },
-        ]
+        menuItems: menuItems
     }
 ])
 
@@ -96,7 +63,6 @@ const menuGroups = ref([
                 <template v-for="menuGroup in menuGroups" :key="menuGroup.name">
                     <div>
                         <h3 class="mb-4 ml-4 text-sm font-medium text-bodydark2">{{ menuGroup.name }}</h3>
-
                         <ul class="mb-6 flex flex-col gap-1.5">
                             <SidebarItem
                                 v-for="(menuItem, index) in menuGroup.menuItems"
